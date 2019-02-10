@@ -127,6 +127,9 @@ public class QueueMetricParser {
 
                         Map<String, String> propertiesMap = oMapper.convertValue(metricConfig, Map.class);
                         BigInteger value = util.getMetricValue(metricConfig.getAttr(), queue.get("message_stats"), metricConfig.isBoolean());
+                        if ( value == null ) {
+                            value = util.getMetricValue(metricConfig.getAttr(), queue, metricConfig.isBoolean());
+                        }
                         String metricName = StringUtils.hasText(stat.getAlias()) ? metricConfig.getAlias() : metricConfig.getAttr();
                         if (showIndividualStats && value!=null) {
                             Metric metric = new Metric(metricName, String.valueOf(value), metricPrefix + statPrefix + metricName, propertiesMap);
